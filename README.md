@@ -11,8 +11,8 @@
 
 [3] Activate the python environment just created
 
-   source mad/bin/activate
-   cd mad
+    source mad/bin/activate
+    cd mad
 
    You are ready to work
 
