@@ -25,6 +25,26 @@
 
 
 
+#  Generation of some test data:
+#   Create some time signals with/without noise to test our denoising
+
+    python mad_signal.py --hz 30 --time 100.0 --signal 1 --out test1.data
+    python mad_signal.py --hz 30 --time 100.0 --signal 1 --out test1_5.data   --decibel 5.0
+    python mad_signal.py --hz 30 --time 100.0 --signal 1 --out test1_7.data   --decibel 7.0
+    python mad_signal.py --hz 30 --time 100.0 --signal 1 --out test1_10.data  --decibel 10.0
+    python mad_signal.py --hz 30 --time 100.0 --signal 1 --out test1_15.data  --decibel 15.0
+    
+
+    python mad_signal.py --hz 30 --time 100.0 --signal 2 --out test2.data
+    python mad_signal.py --hz 30 --time 100.0 --signal 2 --out test2_5.data   --decibel 5.0
+    python mad_signal.py --hz 30 --time 100.0 --signal 2 --out test2_7.data   --decibel 7.0
+    python mad_signal.py --hz 30 --time 100.0 --signal 2 --out test2_10.data  --decibel 10.0
+    python mad_signal.py --hz 30 --time 100.0 --signal 2 --out test2_15.data  --decibel 15.0
+
+
+    Optionally also add the --display flag to visualize the signals during generation
+
 #
-# 
+#
+
 
