@@ -24,8 +24,7 @@
    Ready to run!
 
 
-
-Generation of some test data:
+[5] Generation of some test data
 
     Create some time signals with/without noise to test our denoising
 
