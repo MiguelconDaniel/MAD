@@ -1,5 +1,4 @@
 # MAD SET UP
-#
 
 [1] First clone repository into a folder called mad
 
