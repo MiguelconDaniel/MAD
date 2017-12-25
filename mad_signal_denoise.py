@@ -1,5 +1,6 @@
 #######################################################################
 # MAD:
+#       Miguel & Daniel Sepulveda    2017
 #   
 #######################################################################
 import math
@@ -30,6 +31,53 @@ def load_data( path ):
         line = f.readline().strip()
     
     return (x,y)
+
+#######################################################################
+def linear_regression( m, w, x, y ):
+
+    yp = []
+
+    # Total number of dataa points
+    Ntotal = len(x)
+
+    if( len(y) != Ntotal ):
+
+        logging.error("Inconsistent input data")
+        exit(1)
+    
+
+    # Check if m provided
+    if m > 0:
+
+        N = (m-1)/2
+        
+        Nstart = N
+        Nend   = Ntotal -1 - N
+        
+        # Copy first N values
+        for i in range(N):
+            yp.append( y[i] )
+
+        # Interpolate values locally using linear
+        # regression and fixed size window
+        for i in range(Nstart, Nend+1):
+
+            i0 = i - N
+            i1 = i + N + 1
+
+            beta = mad_regression.linear_regression(m, x[i0:i1], y[i0:i1])
+
+            # Local approximation
+            ypi = beta[0] + beta[1] * x[i]
+            yp.append(ypi)
+
+        # Copy last N values
+        for i in range(N):
+            j = Nend + 1 + i
+            yp.append( y[j] )
+
+            
+    return yp
 
 #######################################################################
 def local_linear_regression( m, w, x, y ):
@@ -63,8 +111,9 @@ def local_linear_regression( m, w, x, y ):
 
             i0 = i - N
             i1 = i + N + 1
+            im = (i0+i1)/2
 
-            beta = mad_regression.linear_regression(m, x[i0:i1], y[i0:i1])
+            beta = mad_regression.local_linear_regression(m, w, x[i], x[i0:i1], y[i0:i1])
 
             # Local approximation
             ypi = beta[0] + beta[1] * x[i]
@@ -129,6 +178,9 @@ def main():
 
         logging.error("You must provide an algorithm for denoising")
         exit(1)
+
+    elif args.algorithm == "lr":
+        algorithm = linear_regression
 
     elif args.algorithm == "llr":
         algorithm = local_linear_regression

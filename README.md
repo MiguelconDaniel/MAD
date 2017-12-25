@@ -44,4 +44,13 @@
     Optionally also add the --display flag to visualize the signals during generation
 
 
+[5] Display data
+
+    You can display the data in a single file or compare the data of two files as such
+
+
+    python mad_display.py --input test1_7.data
+    python mad_display.py --input test1_7.data test1.data
+    
+
 
