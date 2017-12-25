@@ -9,7 +9,7 @@
 
     virtualenv mad
 
-[3] Activate the python environment jsut created
+[3] Activate the python environment just created
 
    source mad/bin/activate
    cd mad

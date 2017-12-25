@@ -1,13 +1,14 @@
 #######################################################################
 # MAD:
-#   
+#       Miguel & Daniel Sepulveda    2017
+# 
 #######################################################################
 import math
 import logging
 import random
 
 import matplotlib
-matplotlib.use('TkAgg')
+matplotlib.use('TkAgg') 
 
 import matplotlib.pyplot as plt
 
