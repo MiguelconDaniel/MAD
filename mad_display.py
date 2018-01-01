@@ -43,8 +43,14 @@ def display1( x, y ):
     plt.xlabel("t (s)")
     plt.ylabel("y(t)")
     plt.show()
-
     
+#######################################################################
+def print1( x, y, output ):
+
+    plt.plot( x, y )
+    plt.xlabel("t (s)")
+    plt.ylabel("y(t)")
+    plt.savefig(output)
 
 #######################################################################
 def display2( x1, y1, x2, y2 ):
@@ -55,7 +61,14 @@ def display2( x1, y1, x2, y2 ):
     plt.ylabel("y(t)")
     plt.show()
 
+#######################################################################
+def print2( x1, y1, x2, y2, output ):
 
+    plt.plot( x1, y1 )
+    plt.plot( x2, y2, linestyle="--" )
+    plt.xlabel("t (s)")
+    plt.ylabel("y(t)")
+    plt.savefig(output)
 
 #######################################################################
 def main():
@@ -69,8 +82,16 @@ def main():
 
     parser = argparse.ArgumentParser(description="Command to generate test time signals")
     parser.add_argument("--input", "-i", help="input files", type=str, nargs="*")
+    parser.add_argument("--print", "-p", help="print figures", action="store_true", dest="prt")
+    parser.add_argument("--output", "-o", help="output filename", type=str, nargs=1)
     
     args = parser.parse_args()
+
+
+    output = "figure.png"
+    if args.output:
+
+        output = args.output[0]
 
     if args.input:
 
@@ -79,7 +100,10 @@ def main():
             file1 = args.input[0]
             (x,y) = load_data(file1)
 
-            display1( x, y )
+            if args.prt:
+                print1( x, y, output )
+            else:
+                display1( x, y )
             
         elif len(args.input) == 2:
 
@@ -89,9 +113,10 @@ def main():
             file2 = args.input[1]
             (x2,y2) = load_data(file2)
 
-            display2( x1, y1, x2, y2 )
-            
-    
+            if args.prt:
+                print2( x1, y1, x2, y2, output )
+            else:
+                display2( x1, y1, x2, y2 )
 
 #######################################################################
 if __name__ == '__main__':

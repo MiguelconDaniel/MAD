@@ -1,3 +1,4 @@
+
 #######################################################################
 # MAD:
 #       Miguel & Daniel Sepulveda    2017
@@ -22,6 +23,22 @@ def signal1( x ):
     return fx
 
 #######################################################################
+def signal1_v( x ):
+
+    t1 = 2.0 * x / 5.0
+    t2 = x / 40.0 - 1.0
+    fx = - 2.0 * math.sin(t1) / 5.0 - 3.0 * t2 * t2 / 40.0 
+    return fx
+
+#######################################################################
+def signal1_a( x ):
+
+    t1 = 2.0 * x / 5.0
+    t2 = x / 40.0 - 1.0
+    fx = - 4.0 * math.cos(t1) / 25.0 - 6.0 * t2 / 1600.0 
+    return fx
+
+#######################################################################
 def signal2( x ):
 
     t1 = x / 10.0
@@ -30,9 +47,35 @@ def signal2( x ):
     return fx
 
 #######################################################################
+def signal2_v( x ):
+
+    t1 = x / 10.0
+    t2 = x / 50.0
+    fx = math.cos(t1)/10.0 + 2.0 * t2 / 50.0
+    return fx
+
+#######################################################################
+def signal2_a( x ):
+
+    t1 = x / 10.0
+    t2 = x / 50.0
+    fx = - math.sin(t1)/100.0 + 2.0 / 2500.0
+    return fx
+
+#######################################################################
 def signal3( x ):
 
     return 10.0 * x
+
+#######################################################################
+def signal3_v( x ):
+
+    return 10.0
+
+#######################################################################
+def signal3_a( x ):
+
+    return 0.0
 
     
 #######################################################################
@@ -109,9 +152,13 @@ def main():
     parser.add_argument("--hz", "-s", help="signal sampling in Hz", type=float, default=30.0)
     parser.add_argument("--time", "-t", help="signal time length in seconds", type=float, default=1.0)
     parser.add_argument("--decibel", "-db", help="noise added in decibels", type=float)
+    parser.add_argument("--noise_ref", "-nr", help="noise reference value", type=float)
     parser.add_argument("--out", "-o", help="output file name")
     parser.add_argument("--signal", help="signal function to use [1,2]", type=int, default=1)
     parser.add_argument("--display", help="display signal", action='store_true')
+    parser.add_argument("--velocity", help="compute velocity", action='store_true')
+    parser.add_argument("--accelerzaation", help="compute acceleration", action='store_true')
+
     
     args = parser.parse_args()
 
@@ -135,18 +182,42 @@ def main():
     signal = None
 
     if args.signal == 1:
-        signal = signal1
+
+        if args.velocity:
+            signal = signal1_v
+        elif args.acceleration:
+            signal = signal1_a
+        else:
+            signal = signal1
         
-    elif args.signal == 2:
-        signal = signal2
+    elif args.signal == 2: 
+
+        if args.velocity:
+            signal = signal2_v
+        elif args.acceleration:
+            signal = signal2_a
+        else:
+            signal = signal2
 
     elif args.signal == 3:
-        signal = signal3
+
+        if args.velocity:
+            signal = signal3_v
+        elif args.acceleration:
+            signal = signal3_a
+        else:
+            signal = signal3
+
 
     else:
 
         logging.error( "signal function selected is not supported" )
         exit(1)
+
+    # Optional noise reference
+    noise_ref = None
+    if args.noise_ref:
+        noise_ref = args.noise_ref
         
 
     ##############################################
@@ -159,7 +230,11 @@ def main():
     # Add noise to signal if needed
     if noise:
 
-        add_noise( x, y, avg * noise )
+        # Has noise references?
+        if not noise_ref: 
+            add_noise( x, y, avg * noise )
+        else:
+            add_noise( x, y, noise_ref * noise )
 
 
     ##############################################
